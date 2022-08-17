@@ -240,8 +240,8 @@ class AsusCTLRGBManager {
 
     getSettings(): ManagerSettings {
         return {
-            configsDir: this.configsDir,
-            defaultConfig: this.defaultConfig,
+            configsDir: this.configsDir || 'configs',
+            defaultConfig: this.defaultConfig || 'default',
             executablePath: this.executablePath
         };
     }

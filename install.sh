@@ -1,0 +1,1 @@
+tsc; chmod +rwx ./build/*; sudo npm i -g; sudo kbd-color --install-systemd
