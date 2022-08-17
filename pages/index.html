@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
+    <title>Asus RGB Manager</title>
+</head>
+
+<body>
+    <h1>
+        Asus RGB Manager
+    </h1>
+
+    <p>
+        configs:
+    </p>
+
+    <br>
+
+    <select id="config-dropdown" onchange="loadConfigToPage()">
+    </select>
+
+    <button id="load-config-button">
+        Load Config
+    </button>
+
+    <br>
+
+    Make new config:
+    <input type="text" id="new-config-name">
+    <button id="new-config-button">Create</button>
+
+    <br>
+
+    <p id="config-zone-1">
+        zone 1:
+        <br>
+        <input type="color" id="zone-1-color" value="#000000">
+    </p>
+
+    <br>
+
+    <p id="config-zone-2">
+        zone 2:
+        <br>
+        <input type="color" id="zone-2-color" value="#000000">
+    </p>
+
+    <br>
+
+    <p id="config-zone-3">
+        zone 3:
+        <br>
+        <input type="color" id="zone-3-color" value="#000000">
+    </p>
+
+    <br>
+
+    <p id="config-zone-4">
+        zone 4:
+        <br>
+        <input type="color" id="zone-4-color" value="#000000">
+    </p>
+
+    <br>
+
+    <button id="save-config">
+        save config
+    </button>
+
+    <br>
+
+    <button id="use-config">
+        use config
+    </button>
+</body>
+
+</html>
