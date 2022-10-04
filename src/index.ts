@@ -318,7 +318,7 @@ class AsusCTLRGBManager {
         while (this.runningAnimation) {
             const config = anim.func(i);
 
-            for (const zone in config.zones) {
+            for (const zone in config) {
                 this.setColor(zone, config[zone].color);
             }
 
@@ -336,7 +336,7 @@ class AsusCTLRGBManager {
         while (this.runningAnimation) {
             const config = anim.run(i);
 
-            for (const zone in config.zones) {
+            for (const zone in config) {
                 this.setColor(zone, config[zone].color);
             }
 
@@ -356,7 +356,7 @@ class AsusCTLRGBManager {
                 break;
             }
 
-            for (const zone in config.zones) {
+            for (const zone in config) {
                 this.setColor(zone, config[zone].color);
             }
 
