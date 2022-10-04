@@ -18,6 +18,58 @@ export type ManagerSettings = {
     executablePath: string;
 }
 
+class FunctionAnimation {
+    func: (time: number) => RGBConfig['zones'];
+    delay: number;
+
+    constructor(func: (time: number) => RGBConfig['zones'], delay: number) {
+        this.func = func;
+        this.delay = delay;
+    }
+
+    static sleep(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+
+class ArrayAnimation {
+    array: RGBConfig['zones'][];
+    delay: number;
+
+    constructor(array: RGBConfig['zones'][], delay: number) {
+        this.array = array;
+        this.delay = delay;
+    }
+
+    static sleep(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    run(i: number) {
+        const j = i % this.array.length;
+
+        return this.array[j];
+    }
+}
+
+class GeneratorAnimation {
+    generator: Generator<RGBConfig['zones'], void, unknown>;
+    delay: number;
+
+    constructor(generator: Generator<RGBConfig['zones'], void, unknown>, delay: number) {
+        this.generator = generator;
+        this.delay = delay;
+    }
+
+    static sleep(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    run() {
+        return this.generator.next().value;
+    }
+}
+
 class AsusCTLRGBManager {
     configDir: string;
     configsDir: string;
@@ -25,6 +77,8 @@ class AsusCTLRGBManager {
     currentConfig: string;
     executablePath: string;
     configs: { [key: string]: RGBConfig };
+
+    private runningAnimation = false;
 
     static defaultConfig: RGBConfig = {
         name: 'default',
@@ -255,6 +309,69 @@ class AsusCTLRGBManager {
             executablePath: this.executablePath
         }));
     }
+
+    async execAnimationFunction(anim: FunctionAnimation) {
+        this.runningAnimation = true;
+
+        let i = 0;
+
+        while (this.runningAnimation) {
+            const config = anim.func(i);
+
+            for (const zone in config.zones) {
+                this.setColor(zone, config[zone].color);
+            }
+
+            await FunctionAnimation.sleep(anim.delay);
+
+            i++;
+        }
+    }
+
+    async execAnimationArray(anim: ArrayAnimation) {
+        this.runningAnimation = true;
+
+        let i = 0;
+
+        while (this.runningAnimation) {
+            const config = anim.run(i);
+
+            for (const zone in config.zones) {
+                this.setColor(zone, config[zone].color);
+            }
+
+            await ArrayAnimation.sleep(anim.delay);
+
+            i++;
+        }
+    }
+
+    async execAnimationGenerator(anim: GeneratorAnimation) {
+        this.runningAnimation = true;
+
+        while (this.runningAnimation) {
+            const config = anim.run();
+
+            if (!config) {
+                break;
+            }
+
+            for (const zone in config.zones) {
+                this.setColor(zone, config[zone].color);
+            }
+
+            await GeneratorAnimation.sleep(anim.delay);
+        }
+    }
+
+    stopAnimation() {
+        this.runningAnimation = false;
+    }
 }
 
 export default AsusCTLRGBManager;
+export {
+    FunctionAnimation,
+    ArrayAnimation,
+    GeneratorAnimation
+};
